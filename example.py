@@ -2,24 +2,26 @@
 import pyMail
 
 #初始化接收邮件类
-rml = mailUtils.ReceiveMailDealer('mail_address','mail_pwd','imap.gmail.com')
+rml = pyMail.ReceiveMailDealer('mail_address','mail_pwd','imap.gmail.com')
 rml.select('INBOX')
-#获取未读邮件列表
-print rml.getUnread()#('OK',['1 2 3 4'])
-#遍历未读邮件
-for num in rml.getUnread()[1][0].split(' '):
-    if num != '':   
+
+#获取所有邮件列表
+maillist=rml.getAll()#('OK',['1 2 3 4'])
+#遍历最新的一封邮件读邮件，ID最大的一个。
+for num in list(maillist)[1][0].split():
+    if num != '' and num == max(list(maillist)[1][0].split()):
         mailInfo = rml.getMailInfo(num)
         print mailInfo['subject']
-        print mailInfo['body']
+        #print mailInfo['body']
         print mailInfo['html']
-        print mailInfo['from']
-        print mailInfo['to']
+        #print mailInfo['from']
+        #print mailInfo['to']
         #遍历附件列表
         for attachment in mailInfo['attachments']:
             fileob = open(attachment['name'],'wb')
             fileob.write(attachment['data'])
             fileob.close()
+
 
 #初始化发送邮件类
 sml = mailUtils.SendMailDealer('mail_address','mail_pwd','smtp.gmail.com')
