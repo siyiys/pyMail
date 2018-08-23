@@ -42,6 +42,8 @@ class ReceiveMailDealer:
     #返回所有未读的邮件列表（返回的是包含邮件序号的列表）
     def getUnread(self):
         return self.search(None,"Unseen")
+    def getAll(self):
+        return self.search(None,"All")
     
     #以RFC822协议格式返回邮件详情的email对象
     def getEmailFormat(self, num):
